@@ -260,6 +260,10 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
             font-size:.8rem; color:var(--ink-soft); gap:.6rem; }}
   .aviso h2 {{ color:var(--ink); }}
   .aviso b {{ color:var(--ink); font-weight:600; }}
+  .aviso .warn {{ font-family:var(--mono); font-size:.72rem; letter-spacing:.03em;
+                  color:var(--ink); background:var(--avoid-fill);
+                  border-left:3px solid var(--avoid); padding:.55rem .65rem;
+                  border-radius:2px; }}
   .aviso .en {{ font-size:.74rem; font-style:italic; padding-top:.15rem;
                 border-top:1px solid var(--rule); }}
   .aviso a {{ color:var(--ink); }}
@@ -367,10 +371,17 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       Tómalo como entretenimiento. El juego es solo para adultos, y solo con dinero que
       puedas perder sin que te afecte.
     </p>
+    <p class="warn">
+      LOS JUEGOS DE AZAR PUEDEN CREAR ADICCIÓN. Si jugar le causa problemas económicos,
+      familiares y ocupacionales, llame a su proveedor de salud mental.
+    </p>
     <p>
-      Si el juego se te está volviendo un problema, la <b>Línea Nacional de Ayuda para el
-      Juego Compulsivo</b> atiende 24/7, gratis y confidencial, en español:
-      <b>1-800-522-4700</b>.
+      En Puerto Rico, el <b>Programa de Ayuda a Jugadores Compulsivos (PAJC)</b> de ASSMCA
+      atiende por la <b>Línea PAS</b> (Primera Ayuda Sicosocial):
+      <b>1-800-981-0023</b> — 24 horas al día, los 7 días de la semana.
+      Más información en <a href="https://www.assmca.pr.gov/">assmca.pr.gov</a> y en la
+      página de <a href="https://loteriasdepuertorico.pr.gov/loteria-tradicional/juego-responsable/">juego
+      responsable</a> de la Lotería.
     </p>
     <p>
       Sin afiliación alguna con la Lotería de Puerto Rico, el Negociado de las Loterías ni
@@ -381,7 +392,8 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       This page is a personal data-science project, not gambling advice. It predicts
       nothing; the lottery returns about 66 cents per dollar wagered and no choice of
       numbers changes that. For entertainment only. Not affiliated with the Lotería de
-      Puerto Rico.
+      Puerto Rico. Gambling can be addictive — in Puerto Rico, ASSMCA's Línea PAS is
+      1-800-981-0023, 24/7.
     </p>
   </section>
 
