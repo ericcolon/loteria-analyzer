@@ -1,4 +1,13 @@
-<title>Lotería Tradicional — Zone Ratings</title>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Calificación de las 50 zonas de la Lotería Tradicional de Puerto Rico por frecuencia de premios y dinero típico.">
+</head>
+<body>
+<title>Lotería Tradicional — Calificación de Zonas</title>
 
 <style>
   :root {
@@ -26,7 +35,9 @@
     --gold:#8f7220; --gold-fill:#a8862c1a; --neutral:#d8ddd5;
   }
 
-  body { background:var(--paper); color:var(--ink); font-family:var(--sans);
+  /* Minimal reset: this page is served standalone, with no framework underneath it. */
+  *, *::before, *::after { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
          line-height:1.55; -webkit-text-size-adjust:100%; }
   .wrap { max-width:36rem; margin:0 auto; padding:1.75rem 1.05rem 3rem;
            display:flex; flex-direction:column; gap:1.3rem; }
@@ -89,20 +100,21 @@
   footer b { color:var(--ink); font-weight:600; }
 </style>
 
-<div class="wrap">
+<div class="wrap" lang="es">
 
   <header class="masthead">
-    <div class="eyebrow">Sorteo Ordinario · 124 drawings · updated 2026-08-11</div>
-    <h1>Zone ratings</h1>
+    <div class="eyebrow">Sorteo Ordinario · 124 sorteos · actualizado 2026-08-11</div>
+    <h1>Qué zonas comprar</h1>
     <p class="note">
-      All 50 zones of 1,000 numbers, rated two ways: how <b>often</b> numbers there win,
-      and the <b>typical money</b> they collect — with each prize capped at $400 so one
-      jackpot can't skew a zone. Same every week; a standing list, not a forecast.
+      Las 50 zonas de 1,000 números, calificadas de dos maneras: <b>con qué frecuencia</b>
+      ganan los números de esa zona, y el <b>dinero típico</b> que cobran — con cada premio
+      limitado a $400 para que un premio mayor no distorsione la zona. Es igual todas las
+      semanas: una lista fija, no un pronóstico.
     </p>
   </header>
 
   <section>
-    <h2>★★ Best on both counts — 13 zones</h2>
+    <h2>★★ Mejores en ambas columnas — 13 zonas</h2>
     <div class="star-zones">
       <div class="star-zone"><span class="zr">12,001</span><span class="dash">–</span><span class="zr">13,000</span></div>
       <div class="star-zone"><span class="zr">15,001</span><span class="dash">–</span><span class="zr">16,000</span></div>
@@ -119,39 +131,40 @@
       <div class="star-zone"><span class="zr">40,001</span><span class="dash">–</span><span class="zr">41,000</span></div>
     </div>
     <p class="note">
-      Top 15 for frequency <i>and</i> top 15 for typical money. If a billete you're
-      offered falls in one of these, that's your buy.
+      Están entre las 15 de mayor frecuencia <i>y</i> entre las 15 de más dinero típico. Si
+      el billete que te ofrecen cae en una de estas, ese es el que compras.
     </p>
   </section>
 
   <section>
-    <h2>Ten numbers to play</h2>
+    <h2>Diez números para jugar</h2>
     <div class="picks">
-      <div class="pick"><span class="num">27950</span><span class="tail">ends 0</span></div>
-      <div class="pick"><span class="num">27621</span><span class="tail">ends 1</span></div>
-      <div class="pick"><span class="num">31682</span><span class="tail">ends 2</span></div>
-      <div class="pick"><span class="num">31893</span><span class="tail">ends 3</span></div>
-      <div class="pick"><span class="num">28574</span><span class="tail">ends 4</span></div>
-      <div class="pick"><span class="num">28775</span><span class="tail">ends 5</span></div>
-      <div class="pick"><span class="num">30836</span><span class="tail">ends 6</span></div>
-      <div class="pick"><span class="num">30227</span><span class="tail">ends 7</span></div>
-      <div class="pick"><span class="num">12058</span><span class="tail">ends 8</span></div>
-      <div class="pick"><span class="num">12309</span><span class="tail">ends 9</span></div>
+      <div class="pick"><span class="num">27950</span><span class="tail">termina en 0</span></div>
+      <div class="pick"><span class="num">27621</span><span class="tail">termina en 1</span></div>
+      <div class="pick"><span class="num">31682</span><span class="tail">termina en 2</span></div>
+      <div class="pick"><span class="num">31893</span><span class="tail">termina en 3</span></div>
+      <div class="pick"><span class="num">28574</span><span class="tail">termina en 4</span></div>
+      <div class="pick"><span class="num">28775</span><span class="tail">termina en 5</span></div>
+      <div class="pick"><span class="num">30836</span><span class="tail">termina en 6</span></div>
+      <div class="pick"><span class="num">30227</span><span class="tail">termina en 7</span></div>
+      <div class="pick"><span class="num">12058</span><span class="tail">termina en 8</span></div>
+      <div class="pick"><span class="num">12309</span><span class="tail">termina en 9</span></div>
     </div>
     <p class="note">
-      Drawn from the best-rated zones, covering every last digit 0–9 — so one of them
-      collects a reintegro every single drawing, guaranteed.
+      Todos salen de las zonas mejor calificadas y entre ellos cubren todas las últimas
+      cifras del 0 al 9 — así que uno siempre cobra <b>reintegro en cada sorteo</b>,
+      garantizado.
     </p>
   </section>
 
   <section>
-    <h2>All 50 zones</h2>
+    <h2>Las 50 zonas</h2>
     <div class="scroll">
       <table>
         <thead>
           <tr>
-            <th>Zone</th><th>Prizes<br>/draw</th><th>vs avg</th>
-            <th>Typical $<br>/draw</th><th>vs avg</th><th></th>
+            <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+            <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
           </tr>
         </thead>
         <tbody>
@@ -190,45 +203,49 @@
         <tr class=""><td class="z">18,001–19,000</td><td class="n">34.2</td><td class="n neg">-1.2%</td><td class="n">$3,905</td><td class="n neg">-0.4%</td><td class="r"></td></tr>
         <tr class=""><td class="z">38,001–39,000</td><td class="n">34.1</td><td class="n neg">-1.3%</td><td class="n">$3,882</td><td class="n neg">-1.0%</td><td class="r"></td></tr>
         <tr class=""><td class="z">47,001–48,000</td><td class="n">34.1</td><td class="n neg">-1.4%</td><td class="n">$3,831</td><td class="n neg">-2.3%</td><td class="r"></td></tr>
-        <tr class="s0"><td class="z">1–1,000</td><td class="n">34.1</td><td class="n neg">-1.5%</td><td class="n">$3,903</td><td class="n neg">-0.5%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">2,001–3,000</td><td class="n">34.0</td><td class="n neg">-1.7%</td><td class="n">$3,829</td><td class="n neg">-2.4%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">6,001–7,000</td><td class="n">33.9</td><td class="n neg">-1.9%</td><td class="n">$3,838</td><td class="n neg">-2.1%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">7,001–8,000</td><td class="n">33.9</td><td class="n neg">-1.9%</td><td class="n">$3,856</td><td class="n neg">-1.7%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">3,001–4,000</td><td class="n">33.7</td><td class="n neg">-2.5%</td><td class="n">$3,814</td><td class="n neg">-2.8%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">4,001–5,000</td><td class="n">33.7</td><td class="n neg">-2.6%</td><td class="n">$3,803</td><td class="n neg">-3.0%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">49,001–50,000</td><td class="n">33.6</td><td class="n neg">-2.8%</td><td class="n">$3,830</td><td class="n neg">-2.3%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">42,001–43,000</td><td class="n">33.6</td><td class="n neg">-3.0%</td><td class="n">$3,829</td><td class="n neg">-2.4%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">41,001–42,000</td><td class="n">33.1</td><td class="n neg">-4.4%</td><td class="n">$3,740</td><td class="n neg">-4.6%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">1,001–2,000</td><td class="n">33.0</td><td class="n neg">-4.5%</td><td class="n">$3,749</td><td class="n neg">-4.4%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">43,001–44,000</td><td class="n">32.5</td><td class="n neg">-6.0%</td><td class="n">$3,669</td><td class="n neg">-6.5%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">48,001–49,000</td><td class="n">32.3</td><td class="n neg">-6.6%</td><td class="n">$3,682</td><td class="n neg">-6.1%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">44,001–45,000</td><td class="n">32.3</td><td class="n neg">-6.6%</td><td class="n">$3,669</td><td class="n neg">-6.4%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">46,001–47,000</td><td class="n">31.7</td><td class="n neg">-8.4%</td><td class="n">$3,615</td><td class="n neg">-7.8%</td><td class="r">avoid</td></tr>
-        <tr class="s0"><td class="z">45,001–46,000</td><td class="n">31.5</td><td class="n neg">-8.9%</td><td class="n">$3,530</td><td class="n neg">-10.0%</td><td class="r">avoid</td></tr>
+        <tr class="s0"><td class="z">1–1,000</td><td class="n">34.1</td><td class="n neg">-1.5%</td><td class="n">$3,903</td><td class="n neg">-0.5%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">2,001–3,000</td><td class="n">34.0</td><td class="n neg">-1.7%</td><td class="n">$3,829</td><td class="n neg">-2.4%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">6,001–7,000</td><td class="n">33.9</td><td class="n neg">-1.9%</td><td class="n">$3,838</td><td class="n neg">-2.1%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">7,001–8,000</td><td class="n">33.9</td><td class="n neg">-1.9%</td><td class="n">$3,856</td><td class="n neg">-1.7%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">3,001–4,000</td><td class="n">33.7</td><td class="n neg">-2.5%</td><td class="n">$3,814</td><td class="n neg">-2.8%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">4,001–5,000</td><td class="n">33.7</td><td class="n neg">-2.6%</td><td class="n">$3,803</td><td class="n neg">-3.0%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">49,001–50,000</td><td class="n">33.6</td><td class="n neg">-2.8%</td><td class="n">$3,830</td><td class="n neg">-2.3%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">42,001–43,000</td><td class="n">33.6</td><td class="n neg">-3.0%</td><td class="n">$3,829</td><td class="n neg">-2.4%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">41,001–42,000</td><td class="n">33.1</td><td class="n neg">-4.4%</td><td class="n">$3,740</td><td class="n neg">-4.6%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">1,001–2,000</td><td class="n">33.0</td><td class="n neg">-4.5%</td><td class="n">$3,749</td><td class="n neg">-4.4%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">43,001–44,000</td><td class="n">32.5</td><td class="n neg">-6.0%</td><td class="n">$3,669</td><td class="n neg">-6.5%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">48,001–49,000</td><td class="n">32.3</td><td class="n neg">-6.6%</td><td class="n">$3,682</td><td class="n neg">-6.1%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">44,001–45,000</td><td class="n">32.3</td><td class="n neg">-6.6%</td><td class="n">$3,669</td><td class="n neg">-6.4%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">46,001–47,000</td><td class="n">31.7</td><td class="n neg">-8.4%</td><td class="n">$3,615</td><td class="n neg">-7.8%</td><td class="r">evitar</td></tr>
+        <tr class="s0"><td class="z">45,001–46,000</td><td class="n">31.5</td><td class="n neg">-8.9%</td><td class="n">$3,530</td><td class="n neg">-10.0%</td><td class="r">evitar</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note">Average is 34.6 prizes per zone per drawing.</p>
+    <p class="note">El promedio es 34.6 premios por zona por sorteo.</p>
   </section>
 
   <footer>
     <div>
-      <b>Why money is capped at $400.</b> 98.5% of prizes are already at or below it, so
-      the cap barely touches the data — but without it, one jackpot decides a zone's rank
-      and the ranking stops repeating. Uncapped, only 6 of the top 15 money zones are also
-      top 15 for frequency; capped, 13 of 15 are.
+      <b>Por qué el dinero se limita a $400.</b> El 98.5% de los premios ya son de $400 o
+      menos, así que el límite casi no altera los datos — pero sin él, un solo premio mayor
+      decide la posición de una zona y la calificación deja de repetirse. Sin límite, solo 6
+      de las 15 zonas de más dinero están también entre las 15 de mayor frecuencia; con el
+      límite, 13 de 15.
     </div>
     <div>
-      <b>What that agreement means.</b> Prize size is drawn from a separate tumbler, so it
-      carries no zone information — a zone's hit count and its average prize size are
-      unrelated. Money is "how often × how much", and only "how often" varies by zone. So
-      ★★ is a sanity check that the two views agree, not a second edge on top of the first.
+      <b>Qué significa que ambas columnas coincidan.</b> El monto del premio sale de un bombo
+      aparte, así que no dice nada sobre la zona: la cantidad de premios de una zona y el
+      monto promedio no tienen relación. El dinero es "cuántas veces × cuánto", y solo
+      "cuántas veces" cambia según la zona. Por eso ★★ confirma que las dos columnas están
+      de acuerdo; no es una ventaja adicional encima de la otra.
     </div>
     <div>
-      <b>Frequency counts</b> only prizes where your number itself was drawn (1,729 of the
-      2,629 each week). The rest are handed out by rule around the main numbers, which
-      dumps 99 prizes into one random zone per drawing and swamps the pattern.
+      <b>La frecuencia cuenta</b> solo los premios donde salió tu número (1,729 de los 2,629
+      de cada semana). Los demás se reparten por regla alrededor de los premios mayores, lo
+      que deja 99 premios en una zona al azar en cada sorteo y tapa el patrón.
     </div>
   </footer>
 
 </div>
+</body>
+</html>

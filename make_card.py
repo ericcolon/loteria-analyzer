@@ -7,6 +7,7 @@ card never drifts from the data:
 
     python make_card.py                    # writes docs/index.html (what GitHub Pages serves)
     python make_card.py --out /tmp/x.html
+    python make_card.py --fragment         # body only, for embedding elsewhere
 """
 
 from __future__ import annotations
@@ -103,7 +104,7 @@ def build(drawings, freq, cash) -> str:
 
     pick_cells = "\n".join(
         f'      <div class="pick"><span class="num">{n:05d}</span>'
-        f'<span class="tail">ends {n % 10}</span></div>'
+        f'<span class="tail">termina en {n % 10}</span></div>'
         for n, _ in picks
     )
 
@@ -117,7 +118,7 @@ def build(drawings, freq, cash) -> str:
         elif zone in hot:
             rating, cls = "★", "s1"
         elif zone in cold:
-            rating, cls = "avoid", "s0"
+            rating, cls = "evitar", "s0"
         else:
             rating, cls = "", ""
         body_rows.append(
@@ -141,7 +142,26 @@ def build(drawings, freq, cash) -> str:
     )
 
 
-TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
+# GitHub Pages serves this file as-is, so it needs a real document around it. The viewport
+# line is the one that matters most: without it mobile Safari lays the page out at desktop
+# width and zooms out, which is useless for a card you read on your phone at the vendor.
+DOC_OPEN = """<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Calificación de las 50 zonas de la Lotería Tradicional de Puerto Rico por frecuencia de premios y dinero típico.">
+</head>
+<body>
+"""
+
+DOC_CLOSE = """</body>
+</html>
+"""
+
+
+TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
 
 <style>
   :root {{
@@ -169,7 +189,9 @@ TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
     --gold:#8f7220; --gold-fill:#a8862c1a; --neutral:#d8ddd5;
   }}
 
-  body {{ background:var(--paper); color:var(--ink); font-family:var(--sans);
+  /* Minimal reset: this page is served standalone, with no framework underneath it. */
+  *, *::before, *::after {{ box-sizing:border-box; }}
+  body {{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
          line-height:1.55; -webkit-text-size-adjust:100%; }}
   .wrap {{ max-width:36rem; margin:0 auto; padding:1.75rem 1.05rem 3rem;
            display:flex; flex-direction:column; gap:1.3rem; }}
@@ -232,48 +254,50 @@ TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
   footer b {{ color:var(--ink); font-weight:600; }}
 </style>
 
-<div class="wrap">
+<div class="wrap" lang="es">
 
   <header class="masthead">
-    <div class="eyebrow">Sorteo Ordinario · {drawings} drawings · updated {updated}</div>
-    <h1>Zone ratings</h1>
+    <div class="eyebrow">Sorteo Ordinario · {drawings} sorteos · actualizado {updated}</div>
+    <h1>Qué zonas comprar</h1>
     <p class="note">
-      All 50 zones of 1,000 numbers, rated two ways: how <b>often</b> numbers there win,
-      and the <b>typical money</b> they collect — with each prize capped at $400 so one
-      jackpot can't skew a zone. Same every week; a standing list, not a forecast.
+      Las 50 zonas de 1,000 números, calificadas de dos maneras: <b>con qué frecuencia</b>
+      ganan los números de esa zona, y el <b>dinero típico</b> que cobran — con cada premio
+      limitado a $400 para que un premio mayor no distorsione la zona. Es igual todas las
+      semanas: una lista fija, no un pronóstico.
     </p>
   </header>
 
   <section>
-    <h2>★★ Best on both counts — {star_count} zones</h2>
+    <h2>★★ Mejores en ambas columnas — {star_count} zonas</h2>
     <div class="star-zones">
 {star_rows}
     </div>
     <p class="note">
-      Top 15 for frequency <i>and</i> top 15 for typical money. If a billete you're
-      offered falls in one of these, that's your buy.
+      Están entre las 15 de mayor frecuencia <i>y</i> entre las 15 de más dinero típico. Si
+      el billete que te ofrecen cae en una de estas, ese es el que compras.
     </p>
   </section>
 
   <section>
-    <h2>Ten numbers to play</h2>
+    <h2>Diez números para jugar</h2>
     <div class="picks">
 {pick_cells}
     </div>
     <p class="note">
-      Drawn from the best-rated zones, covering every last digit 0–9 — so one of them
-      collects a reintegro every single drawing, guaranteed.
+      Todos salen de las zonas mejor calificadas y entre ellos cubren todas las últimas
+      cifras del 0 al 9 — así que uno siempre cobra <b>reintegro en cada sorteo</b>,
+      garantizado.
     </p>
   </section>
 
   <section>
-    <h2>All 50 zones</h2>
+    <h2>Las 50 zonas</h2>
     <div class="scroll">
       <table>
         <thead>
           <tr>
-            <th>Zone</th><th>Prizes<br>/draw</th><th>vs avg</th>
-            <th>Typical $<br>/draw</th><th>vs avg</th><th></th>
+            <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+            <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
           </tr>
         </thead>
         <tbody>
@@ -281,26 +305,28 @@ TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
         </tbody>
       </table>
     </div>
-    <p class="note">Average is {avg_freq:.1f} prizes per zone per drawing.</p>
+    <p class="note">El promedio es {avg_freq:.1f} premios por zona por sorteo.</p>
   </section>
 
   <footer>
     <div>
-      <b>Why money is capped at $400.</b> 98.5% of prizes are already at or below it, so
-      the cap barely touches the data — but without it, one jackpot decides a zone's rank
-      and the ranking stops repeating. Uncapped, only 6 of the top 15 money zones are also
-      top 15 for frequency; capped, 13 of 15 are.
+      <b>Por qué el dinero se limita a $400.</b> El 98.5% de los premios ya son de $400 o
+      menos, así que el límite casi no altera los datos — pero sin él, un solo premio mayor
+      decide la posición de una zona y la calificación deja de repetirse. Sin límite, solo 6
+      de las 15 zonas de más dinero están también entre las 15 de mayor frecuencia; con el
+      límite, 13 de 15.
     </div>
     <div>
-      <b>What that agreement means.</b> Prize size is drawn from a separate tumbler, so it
-      carries no zone information — a zone's hit count and its average prize size are
-      unrelated. Money is "how often × how much", and only "how often" varies by zone. So
-      ★★ is a sanity check that the two views agree, not a second edge on top of the first.
+      <b>Qué significa que ambas columnas coincidan.</b> El monto del premio sale de un bombo
+      aparte, así que no dice nada sobre la zona: la cantidad de premios de una zona y el
+      monto promedio no tienen relación. El dinero es "cuántas veces × cuánto", y solo
+      "cuántas veces" cambia según la zona. Por eso ★★ confirma que las dos columnas están
+      de acuerdo; no es una ventaja adicional encima de la otra.
     </div>
     <div>
-      <b>Frequency counts</b> only prizes where your number itself was drawn (1,729 of the
-      2,629 each week). The rest are handed out by rule around the main numbers, which
-      dumps 99 prizes into one random zone per drawing and swamps the pattern.
+      <b>La frecuencia cuenta</b> solo los premios donde salió tu número (1,729 de los 2,629
+      de cada semana). Los demás se reparten por regla alrededor de los premios mayores, lo
+      que deja 99 premios en una zona al azar en cada sorteo y tapa el patrón.
     </div>
   </footer>
 
@@ -312,6 +338,8 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", default="docs/index.html",
                         help="output path (default: docs/index.html, served by Pages)")
+    parser.add_argument("--fragment", action="store_true",
+                        help="emit body content only, without the html/head wrapper")
     parser.add_argument("--since", type=int, metavar="YEAR")
     parser.add_argument("--until", type=int, metavar="YEAR")
     args = parser.parse_args(argv)
@@ -325,7 +353,10 @@ def main(argv=None) -> int:
     with psycopg.connect(dsn, connect_timeout=20) as conn:
         drawings, freq, cash = fetch(conn, args.since, args.until)
 
-    Path(args.out).write_text(build(drawings, freq, cash), encoding="utf-8")
+    page = build(drawings, freq, cash)
+    if not args.fragment:
+        page = DOC_OPEN + page + DOC_CLOSE
+    Path(args.out).write_text(page, encoding="utf-8")
     print(f"wrote {args.out} from {drawings} drawings")
     return 0
 
