@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 import numpy as np
@@ -130,6 +131,7 @@ def build(drawings, freq, cash) -> str:
         )
 
     return TEMPLATE.format(
+        updated=date.today().isoformat(),
         drawings=drawings,
         star_count=len(both),
         star_rows=star_rows,
@@ -233,7 +235,7 @@ TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
 <div class="wrap">
 
   <header class="masthead">
-    <div class="eyebrow">Sorteo Ordinario · {drawings} drawings</div>
+    <div class="eyebrow">Sorteo Ordinario · {drawings} drawings · updated {updated}</div>
     <h1>Zone ratings</h1>
     <p class="note">
       All 50 zones of 1,000 numbers, rated two ways: how <b>often</b> numbers there win,

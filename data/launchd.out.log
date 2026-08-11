@@ -1,0 +1,12 @@
+[2026-08-11 05:23:46Z] ==============================================================
+[2026-08-11 05:23:46Z] weekly run starting
+[2026-08-11 05:23:46Z] --- download: download_results.py --sources live
+[2026-08-11 05:23:48Z]     manifest holds 141 drawing(s) at /Users/ericcolon/coding_projects/loteria-analyzer/data
+[2026-08-11 05:23:48Z]     live: 27 files across 1 page(s)
+[2026-08-11 05:23:48Z]     live: indexed 27 prize lists
+[2026-08-11 05:23:48Z]     27 drawing(s) indexed, 27 already held, 0 to fetch
+[2026-08-11 05:23:48Z]     
+[2026-08-11 05:23:48Z]     done: 0 downloaded, 27 skipped, 0 failed — 141 drawing(s) in the corpus
+[2026-08-11 05:23:48Z] no new drawings this week
+[2026-08-11 05:23:48Z] card left as is (use --force-card to rebuild anyway)
+[2026-08-11 05:23:48Z] done
