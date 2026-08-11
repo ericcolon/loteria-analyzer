@@ -131,13 +131,18 @@ def build(drawings, freq, cash) -> str:
             f'<td class="r">{rating}</td></tr>'
         )
 
+    # The table is by far the tallest block. Splitting it in half lets the desktop
+    # layout put the two halves side by side instead of leaving a column of dead space;
+    # on a phone the halves simply stack and read as one continuous list.
+    middle = (len(body_rows) + 1) // 2
     return TEMPLATE.format(
         updated=date.today().isoformat(),
         drawings=drawings,
         star_count=len(both),
         star_rows=star_rows,
         pick_cells=pick_cells,
-        table_rows="\n".join(body_rows),
+        table_rows_a="\n".join(body_rows[:middle]),
+        table_rows_b="\n".join(body_rows[middle:]),
         avg_freq=freq.mean(),
     )
 
@@ -267,6 +272,33 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
   .aviso .en {{ font-size:.74rem; font-style:italic; padding-top:.15rem;
                 border-top:1px solid var(--rule); }}
   .aviso a {{ color:var(--ink); }}
+
+  /* Stacked by default — phone first. */
+  .content, .bottom {{ display:flex; flex-direction:column; gap:1.3rem; }}
+  .tables {{ display:flex; flex-direction:column; gap:1rem; }}
+
+  /* On a desktop the single 36rem column left most of the window empty. The 50-row
+     table is by far the tallest block, so it gets its own column beside the summary
+     cards, and the two closing notes sit side by side underneath. */
+  @media (min-width: 62rem) {{
+    .wrap {{ max-width:72rem; padding:2.25rem 2rem 3.5rem; gap:1.6rem; }}
+    h1 {{ font-size:2.45rem; }}
+    /* Keep running text at a readable measure even though the page is now wide. */
+    .masthead > .note, .masthead > .banner {{ max-width:46rem; }}
+    .content {{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+                align-items:start; gap:1.6rem; }}
+    .tables {{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+               align-items:start; gap:1.5rem; }}
+    .bottom {{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+               align-items:start; gap:1.6rem; }}
+    /* The footer now sits beside the aviso, so give it a matching panel instead of a
+       bare top rule. The aviso keeps its accent bar so it still reads as the notice. */
+    footer {{ border:1px solid var(--rule); border-radius:3px;
+              padding:1rem .95rem 1.1rem; }}
+    /* The table has room to breathe now. */
+    table {{ font-size:.84rem; }}
+    tbody td {{ padding:.34rem .5rem; }}
+  }}
 </style>
 
 <div class="wrap" lang="es">
@@ -285,6 +317,8 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       final.
     </p>
   </header>
+
+  <div class="content">
 
   <section>
     <h2>★★ Mejores en ambas columnas — {star_count} zonas</h2>
@@ -309,24 +343,42 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
     </p>
   </section>
 
+  </div>
+
   <section>
     <h2>Las 50 zonas</h2>
-    <div class="scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
-            <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
-          </tr>
-        </thead>
-        <tbody>
-{table_rows}
-        </tbody>
-      </table>
+    <div class="tables">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+              <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+{table_rows_a}
+          </tbody>
+        </table>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+              <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+{table_rows_b}
+          </tbody>
+        </table>
+      </div>
     </div>
     <p class="note">El promedio es {avg_freq:.1f} premios por zona por sorteo.</p>
   </section>
 
+  <div class="bottom">
   <footer>
     <div>
       <b>El límite de $400.</b> Existe porque el 98.5% de los premios ya son de $400 o
@@ -396,6 +448,7 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       1-800-981-0023, 24/7.
     </p>
   </section>
+  </div>
 
 </div>
 """

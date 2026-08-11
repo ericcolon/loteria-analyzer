@@ -113,6 +113,33 @@
   .aviso .en { font-size:.74rem; font-style:italic; padding-top:.15rem;
                 border-top:1px solid var(--rule); }
   .aviso a { color:var(--ink); }
+
+  /* Stacked by default — phone first. */
+  .content, .bottom { display:flex; flex-direction:column; gap:1.3rem; }
+  .tables { display:flex; flex-direction:column; gap:1rem; }
+
+  /* On a desktop the single 36rem column left most of the window empty. The 50-row
+     table is by far the tallest block, so it gets its own column beside the summary
+     cards, and the two closing notes sit side by side underneath. */
+  @media (min-width: 62rem) {
+    .wrap { max-width:72rem; padding:2.25rem 2rem 3.5rem; gap:1.6rem; }
+    h1 { font-size:2.45rem; }
+    /* Keep running text at a readable measure even though the page is now wide. */
+    .masthead > .note, .masthead > .banner { max-width:46rem; }
+    .content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+                align-items:start; gap:1.6rem; }
+    .tables { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+               align-items:start; gap:1.5rem; }
+    .bottom { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+               align-items:start; gap:1.6rem; }
+    /* The footer now sits beside the aviso, so give it a matching panel instead of a
+       bare top rule. The aviso keeps its accent bar so it still reads as the notice. */
+    footer { border:1px solid var(--rule); border-radius:3px;
+              padding:1rem .95rem 1.1rem; }
+    /* The table has room to breathe now. */
+    table { font-size:.84rem; }
+    tbody td { padding:.34rem .5rem; }
+  }
 </style>
 
 <div class="wrap" lang="es">
@@ -131,6 +158,8 @@
       final.
     </p>
   </header>
+
+  <div class="content">
 
   <section>
     <h2>★★ Mejores en ambas columnas — 13 zonas</h2>
@@ -176,17 +205,20 @@
     </p>
   </section>
 
+  </div>
+
   <section>
     <h2>Las 50 zonas</h2>
-    <div class="scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
-            <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
-          </tr>
-        </thead>
-        <tbody>
+    <div class="tables">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+              <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
         <tr class="s2"><td class="z">27,001–28,000</td><td class="n">36.8</td><td class="n pos">+6.4%</td><td class="n">$4,117</td><td class="n pos">+5.0%</td><td class="r">★★</td></tr>
         <tr class="s2"><td class="z">31,001–32,000</td><td class="n">36.7</td><td class="n pos">+6.2%</td><td class="n">$4,177</td><td class="n pos">+6.5%</td><td class="r">★★</td></tr>
         <tr class="s2"><td class="z">28,001–29,000</td><td class="n">36.4</td><td class="n pos">+5.4%</td><td class="n">$4,127</td><td class="n pos">+5.2%</td><td class="r">★★</td></tr>
@@ -212,6 +244,18 @@
         <tr class=""><td class="z">13,001–14,000</td><td class="n">34.9</td><td class="n pos">+1.0%</td><td class="n">$3,920</td><td class="n neg">-0.0%</td><td class="r"></td></tr>
         <tr class=""><td class="z">25,001–26,000</td><td class="n">34.9</td><td class="n pos">+0.9%</td><td class="n">$3,915</td><td class="n neg">-0.2%</td><td class="r"></td></tr>
         <tr class=""><td class="z">21,001–22,000</td><td class="n">34.9</td><td class="n pos">+0.8%</td><td class="n">$3,952</td><td class="n pos">+0.8%</td><td class="r"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Zona</th><th>Premios<br>/sorteo</th><th>vs prom.</th>
+              <th>$ típico<br>/sorteo</th><th>vs prom.</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
         <tr class=""><td class="z">8,001–9,000</td><td class="n">34.8</td><td class="n pos">+0.5%</td><td class="n">$3,897</td><td class="n neg">-0.6%</td><td class="r"></td></tr>
         <tr class=""><td class="z">23,001–24,000</td><td class="n">34.7</td><td class="n pos">+0.5%</td><td class="n">$3,943</td><td class="n pos">+0.5%</td><td class="r"></td></tr>
         <tr class=""><td class="z">9,001–10,000</td><td class="n">34.6</td><td class="n pos">+0.1%</td><td class="n">$3,935</td><td class="n pos">+0.3%</td><td class="r"></td></tr>
@@ -237,12 +281,14 @@
         <tr class="s0"><td class="z">44,001–45,000</td><td class="n">32.3</td><td class="n neg">-6.6%</td><td class="n">$3,669</td><td class="n neg">-6.4%</td><td class="r">evitar</td></tr>
         <tr class="s0"><td class="z">46,001–47,000</td><td class="n">31.7</td><td class="n neg">-8.4%</td><td class="n">$3,615</td><td class="n neg">-7.8%</td><td class="r">evitar</td></tr>
         <tr class="s0"><td class="z">45,001–46,000</td><td class="n">31.5</td><td class="n neg">-8.9%</td><td class="n">$3,530</td><td class="n neg">-10.0%</td><td class="r">evitar</td></tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
     <p class="note">El promedio es 34.6 premios por zona por sorteo.</p>
   </section>
 
+  <div class="bottom">
   <footer>
     <div>
       <b>El límite de $400.</b> Existe porque el 98.5% de los premios ya son de $400 o
@@ -312,6 +358,7 @@
       1-800-981-0023, 24/7.
     </p>
   </section>
+  </div>
 
 </div>
 </body>
