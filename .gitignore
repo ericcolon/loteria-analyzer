@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.pyc
+*.part
+
+# Database credentials — never commit.
+.env
+
+# Bulky and re-fetchable; the manifest is the artifact worth keeping.
+data/pdfs/
+data/failures.json
+
+# Regenerable from the PDFs, and rewritten in full every week — committing it would add
+# ~8 MB to history each run. The database is the source of truth for parsed results.
+data/parsed/
+data/weekly.log
+card.html
+
+# macOS
+.DS_Store
