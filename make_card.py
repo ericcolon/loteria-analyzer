@@ -252,6 +252,17 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
   footer {{ font-size:.78rem; color:var(--ink-soft); border-top:1px solid var(--rule);
             padding-top:.9rem; display:flex; flex-direction:column; gap:.5rem; }}
   footer b {{ color:var(--ink); font-weight:600; }}
+
+  /* Deliberately quieter than the data sections — a notice, not a headline. */
+  .banner {{ font-size:.76rem; color:var(--ink-soft); border:1px dashed var(--rule);
+             border-radius:2px; padding:.5rem .65rem; }}
+  .aviso {{ background:transparent; border:1px solid var(--rule); border-left:3px solid var(--ink-soft);
+            font-size:.8rem; color:var(--ink-soft); gap:.6rem; }}
+  .aviso h2 {{ color:var(--ink); }}
+  .aviso b {{ color:var(--ink); font-weight:600; }}
+  .aviso .en {{ font-size:.74rem; font-style:italic; padding-top:.15rem;
+                border-top:1px solid var(--rule); }}
+  .aviso a {{ color:var(--ink); }}
 </style>
 
 <div class="wrap" lang="es">
@@ -264,6 +275,10 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       ganan los números de esa zona, y el <b>dinero típico</b> que cobran — con cada premio
       limitado a $400 para que un premio mayor no distorsione la zona. Es igual todas las
       semanas: una lista fija, no un pronóstico.
+    </p>
+    <p class="banner">
+      Proyecto de ciencia de datos. <b>No es asesoría para apostar</b> — lee el aviso al
+      final.
     </p>
   </header>
 
@@ -329,6 +344,46 @@ TEMPLATE = """<title>Lotería Tradicional — Calificación de Zonas</title>
       que deja 99 premios en una zona al azar en cada sorteo y tapa el patrón.
     </div>
   </footer>
+
+  <section class="aviso">
+    <h2>Aviso</h2>
+    <p>
+      Esta página es un <b>proyecto personal de ciencia de datos e inteligencia
+      artificial</b>. No es asesoría para apostar, no promuevo el juego y no sugiero que
+      nadie compre billetes.
+    </p>
+    <p>
+      Los números y las zonas salen de un análisis estadístico de listas oficiales de
+      premios ya publicadas. <b>No predicen nada.</b> Cada sorteo es independiente y ninguna
+      selección de números cambia eso. Las diferencias entre zonas son pequeñas y solo
+      aparecen a lo largo de años, no en un sorteo.
+    </p>
+    <p>
+      La matemática sin adornos: la Lotería reparte alrededor de <b>66 centavos por cada
+      dólar</b> que se juega. A la larga se pierde dinero, no importa qué números escojas.
+      Nada en esta página cambia eso ni existe manera de ganarle.
+    </p>
+    <p>
+      Tómalo como entretenimiento. El juego es solo para adultos, y solo con dinero que
+      puedas perder sin que te afecte.
+    </p>
+    <p>
+      Si el juego se te está volviendo un problema, la <b>Línea Nacional de Ayuda para el
+      Juego Compulsivo</b> atiende 24/7, gratis y confidencial, en español:
+      <b>1-800-522-4700</b>.
+    </p>
+    <p>
+      Sin afiliación alguna con la Lotería de Puerto Rico, el Negociado de las Loterías ni
+      el Departamento de Hacienda. La lista oficial de premios publicada por la Lotería es
+      la única referencia válida para cobrar.
+    </p>
+    <p class="en">
+      This page is a personal data-science project, not gambling advice. It predicts
+      nothing; the lottery returns about 66 cents per dollar wagered and no choice of
+      numbers changes that. For entertainment only. Not affiliated with the Lotería de
+      Puerto Rico.
+    </p>
+  </section>
 
 </div>
 """
