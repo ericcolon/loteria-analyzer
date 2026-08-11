@@ -3,13 +3,19 @@
 Downloads, parses, and warehouses the official prize-list PDFs (`Lista Oficial de Premios`)
 published by the Lotería de Puerto Rico.
 
-Three stages, each independently re-runnable:
+**Live card: https://ericcolon.github.io/loteria-analyzer/** — zone ratings, rebuilt weekly.
+
+Five stages, each independently re-runnable:
 
 ```
 download_results.py  →  verified PDFs + data/manifest.json
 parse_results.py     →  data/parsed/*.csv  (structured, self-validated)
 load_supabase.py     →  Postgres tables in Supabase
+analyze.py           →  the shopping list, on the terminal
+make_card.py         →  docs/index.html, served by GitHub Pages
 ```
+
+`weekly.py` runs all of it in one command, and launchd fires it every Friday.
 
 ## Setup
 
@@ -19,15 +25,53 @@ python3 -m venv .venv
 cp .env.example .env      # then paste your Supabase Postgres URI (load stage only)
 ```
 
-## Weekly routine
+## Weekly routine — automated
 
-A new drawing is published each Thursday. To pick it up:
+A new drawing is published each Thursday evening. **This runs itself every Friday at
+8:00 AM** via a launchd agent; there is nothing to remember.
 
 ```bash
-.venv/bin/python download_results.py --sources live       # fetch what's new
-.venv/bin/python parse_results.py --only 2026-033         # parse just it (merges)
-.venv/bin/python load_supabase.py --only 2026-033         # upsert just it
+.venv/bin/python weekly.py              # what the schedule runs
+.venv/bin/python weekly.py --dry-run    # show what's new, change nothing
+.venv/bin/python weekly.py --publish    # also push the rebuilt card to Pages
 ```
+
+`weekly.py` works out for itself which drawings are new — it compares the download
+manifest against what has already been parsed — so it is safe to run repeatedly. On a week
+with no new drawing it does nothing and says so. It also picks up anything a previous run
+downloaded but failed to parse.
+
+### The schedule
+
+| | |
+| --- | --- |
+| Agent | `com.ericcolon.loteria-weekly` |
+| Plist | `~/Library/LaunchAgents/com.ericcolon.loteria-weekly.plist` |
+| Fires | Fridays, 8:00 AM local |
+| Logs | `data/weekly.log`, plus `data/launchd.{out,err}.log` |
+
+```bash
+launchctl print gui/$(id -u)/com.ericcolon.loteria-weekly   # status, run count, last exit
+launchctl kickstart -w gui/$(id -u)/com.ericcolon.loteria-weekly   # run it now
+launchctl bootout gui/$(id -u)/com.ericcolon.loteria-weekly        # disable
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.ericcolon.loteria-weekly.plist  # re-enable
+```
+
+Two details that matter for reliability, both verified rather than assumed:
+
+- **The Mac has to be awake at some point.** If it's asleep at 8:00 Friday, launchd runs
+  the job when it next wakes, so a week is never silently skipped — it just lands late.
+- **The plist sets `PATH` explicitly.** launchd's default `PATH` omits Homebrew, and `git`
+  lives in `/opt/homebrew/bin` here, so publishing would fail without it. Pushing over SSH
+  was checked in a stripped environment (no ssh-agent) before relying on it.
+
+### Deployment
+
+`docs/index.html` is the card; GitHub Pages serves it from `main` at `/docs`. `weekly.py
+--publish` commits and pushes it only when the content actually changed, and Pages rebuilds
+within a minute or two. The card carries its own build date so a stale copy is obvious.
+
+Manually: `.venv/bin/python make_card.py && git add docs/index.html && git commit && git push`.
 
 Every stage is idempotent, so running any of them twice is harmless.
 

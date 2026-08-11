@@ -5,7 +5,7 @@ Writes a self-contained HTML page rating all 50 zones of 1,000 on both frequency
 prize money, plus a suggested set of numbers. Regenerate after each weekly load so the
 card never drifts from the data:
 
-    python make_card.py                    # writes card.html
+    python make_card.py                    # writes docs/index.html (what GitHub Pages serves)
     python make_card.py --out /tmp/x.html
 """
 
@@ -310,7 +310,8 @@ TEMPLATE = """<title>Lotería Tradicional — Zone Ratings</title>
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--out", default="card.html")
+    parser.add_argument("--out", default="docs/index.html",
+                        help="output path (default: docs/index.html, served by Pages)")
     parser.add_argument("--since", type=int, metavar="YEAR")
     parser.add_argument("--until", type=int, metavar="YEAR")
     args = parser.parse_args(argv)
