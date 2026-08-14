@@ -68,8 +68,14 @@ class Fetcher:
 
     # -- requests -------------------------------------------------------------
 
-    def request(self, url: str, *, stream: bool = False, **kwargs) -> requests.Response:
-        """GET ``url``, retrying transient failures with exponential backoff."""
+    def _with_retries(self, url: str, consume, *, stream: bool = False, **kwargs):
+        """GET ``url``, hand the response to ``consume``, and return what it returns.
+
+        ``consume`` runs *inside* the retry loop. A connection dropped while the body
+        is still arriving is transient in exactly the way a failed handshake is, and
+        restarting the transfer is the only way to recover it, so both are retried.
+        Reading the body outside this loop would make every mid-transfer reset fatal.
+        """
         last_error: str = "unknown"
         for attempt in range(1, MAX_ATTEMPTS + 1):
             self._wait_turn(url)
@@ -78,20 +84,31 @@ class Fetcher:
             except requests.RequestException as exc:
                 last_error = f"{type(exc).__name__}: {exc}"
             else:
-                if response.status_code not in RETRY_STATUS:
-                    response.raise_for_status()
-                    return response
-                last_error = f"HTTP {response.status_code}"
-                retry_after = _retry_after_seconds(response)
-                response.close()
-                if attempt < MAX_ATTEMPTS:
-                    self._sleep_backoff(attempt, retry_after)
+                if response.status_code in RETRY_STATUS:
+                    last_error = f"HTTP {response.status_code}"
+                    retry_after = _retry_after_seconds(response)
+                    response.close()
+                    if attempt < MAX_ATTEMPTS:
+                        self._sleep_backoff(attempt, retry_after)
                     continue
+
+                # Outside the try below: a non-retryable status is the caller's
+                # problem, not something to spend four more attempts on.
+                response.raise_for_status()
+                try:
+                    return consume(response)
+                except requests.RequestException as exc:
+                    last_error = f"{type(exc).__name__}: {exc}"
+                    response.close()
 
             if attempt < MAX_ATTEMPTS:
                 self._sleep_backoff(attempt, None)
 
         raise FetchError(f"{last_error} after {MAX_ATTEMPTS} attempts: {url}")
+
+    def request(self, url: str, **kwargs) -> requests.Response:
+        """GET ``url``, retrying transient failures with exponential backoff."""
+        return self._with_retries(url, lambda response: response, **kwargs)
 
     def get_json(self, url: str, **kwargs):
         response = self.request(url, **kwargs)
@@ -116,17 +133,26 @@ class Fetcher:
         """
         dest.parent.mkdir(parents=True, exist_ok=True)
         temp = dest.with_suffix(dest.suffix + ".part")
-        response = self.request(url, stream=True)
+
+        def write(response: requests.Response) -> Path:
+            # Each attempt truncates and starts over, so a partial write left by a
+            # reset connection is never mistaken for the head of a good file.
+            try:
+                with open(temp, "wb") as handle:
+                    for chunk in response.iter_content(CHUNK):
+                        handle.write(chunk)
+            except BaseException:
+                temp.unlink(missing_ok=True)
+                raise
+            finally:
+                response.close()
+            return temp
+
         try:
-            with open(temp, "wb") as handle:
-                for chunk in response.iter_content(CHUNK):
-                    handle.write(chunk)
+            return self._with_retries(url, write, stream=True)
         except BaseException:
             temp.unlink(missing_ok=True)
             raise
-        finally:
-            response.close()
-        return temp
 
 
 def commit(temp: Path, dest: Path) -> None:
